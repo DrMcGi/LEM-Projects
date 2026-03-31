@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f5ef;
+  --foreground: #1f2937;
+  --accent: #0f766e;
+  --warm: #f59e0b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+}
+
+body {
+  position: relative;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 12% 22%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 50%),
+    radial-gradient(circle at 90% 0%, color-mix(in oklab, var(--warm) 22%, transparent), transparent 46%),
+    linear-gradient(180deg, #f8f5ef, #f4efe7 45%, #f8f5ef);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading), sans-serif;
+}
+
+.crawl-stage {
+  perspective: 600px;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%);
+}
+
+.crawl-text {
+  transform-origin: 50% 100%;
+  animation: lem-crawl 20s linear infinite;
+}
+
+.division-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 500ms ease, box-shadow 500ms ease, border-color 300ms ease;
+}
+
+.division-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.45), rgba(245, 158, 11, 0.25));
+  opacity: 0;
+  transition: opacity 300ms ease;
+  z-index: -1;
+}
+
+.division-card:hover {
+  transform: translateY(-8px) rotateX(4deg) rotateY(-5deg) scale(1.015);
+  box-shadow: 0 30px 70px -34px rgba(0, 0, 0, 0.45);
+}
+
+.division-card:hover::after {
+  opacity: 1;
+}
+
+@keyframes lem-crawl {
+  0% {
+    transform: rotateX(24deg) translateY(35%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotateX(24deg) translateY(-130%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crawl-text {
+    animation: none;
+    transform: none;
+  }
+
+  .division-card {
+    transition: none;
+  }
+
+  .division-card:hover {
+    transform: none;
+  }
+}
