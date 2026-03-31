@@ -6,7 +6,7 @@ const divisions = [
     status: "Live",
     description:
       "Reliable home-away-from-home rentals designed for comfort, convenience, and peace of mind.",
-    href: "https://lem-group.vercel.app",
+    href: "https://lem-accommodation.vercel.app",
     cta: "Visit LEM Accommodation",
   },
   {
