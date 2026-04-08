@@ -18,9 +18,9 @@ type Division = {
   promise: string;
 };
 
-type HoldingExperienceProps = {
+type ProjectsExperienceProps = {
   divisions: Division[];
-  holdingLogoPath: string | null;
+  projectsLogoPath: string | null;
 };
 
 type MagneticLinkProps = {
@@ -33,6 +33,11 @@ type MagneticLinkProps = {
 type MagneticAnchorProps = MagneticLinkProps & {
   target?: string;
   rel?: string;
+};
+
+type IntroNavLinkProps = {
+  href: string;
+  label: string;
 };
 
 const staggerParent = {
@@ -157,6 +162,18 @@ function MagneticAnchor({ href, label, variant = "primary", target, rel }: Magne
   );
 }
 
+function IntroNavLink({ href, label }: IntroNavLinkProps) {
+  return (
+    <Link
+      href={href}
+      className="inline-flex items-center gap-3 rounded-full border border-teal-200 bg-white/75 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-teal-800 transition hover:bg-teal-50"
+    >
+      <span className="signal-dot" />
+      <span>{label}</span>
+    </Link>
+  );
+}
+
 function ContactIcon({ kind }: { kind: "whatsapp" | "phone" | "mail" }) {
   if (kind === "whatsapp") {
     return (
@@ -205,7 +222,7 @@ function ContactChip({ href, icon, value }: { href?: string; icon: ReactNode; va
   return <div className="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/6 px-3 py-2 text-sm font-semibold text-stone-100">{content}</div>;
 }
 
-function DivisionCard({ division, index }: { division: Division; index: number }) {
+function DivisionCard({ division, index, variant = "featured" }: { division: Division; index: number; variant?: "featured" | "subsidiary" }) {
   const prefersReducedMotion = useReducedMotion();
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -236,6 +253,7 @@ function DivisionCard({ division, index }: { division: Division; index: number }
   const accent = accentStyles[division.accent];
   const isLive = division.status === "Live";
   const launchChipClass = isLive ? "bg-emerald-100 text-emerald-700" : accentStyles.amber.chip;
+  const isSubsidiary = variant === "subsidiary";
 
   return (
     <motion.article
@@ -245,25 +263,25 @@ function DivisionCard({ division, index }: { division: Division; index: number }
       viewport={{ once: true, amount: 0.25 }}
       transition={{ delay: index * 0.06 }}
       style={prefersReducedMotion ? undefined : { rotateX: y, rotateY: x }}
-      whileHover={prefersReducedMotion ? undefined : { y: -12, scale: 1.018 }}
+      whileHover={prefersReducedMotion ? undefined : { y: isSubsidiary ? -8 : -12, scale: isSubsidiary ? 1.012 : 1.018 }}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetRotation}
-      className={`division-card group relative overflow-hidden rounded-4xl border border-white/60 bg-white/85 p-6 backdrop-blur-sm ${accent.ring}`}
+      className={`division-card group relative overflow-hidden border border-white/60 bg-white/85 backdrop-blur-sm ${accent.ring} ${isSubsidiary ? "rounded-4xl p-4 sm:p-5" : "rounded-4xl p-6"}`}
     >
       <div className={`pointer-events-none absolute inset-0 bg-linear-to-br ${accent.glow} opacity-70`} />
-      <div className="pointer-events-none absolute inset-x-8 top-0 h-24 rounded-b-full bg-white/35 blur-2xl" />
+      <div className={`pointer-events-none top-0 rounded-b-full bg-white/35 blur-2xl ${isSubsidiary ? "absolute inset-x-5 h-18" : "absolute inset-x-8 h-24"}`} />
       <div className="division-card-reflection" aria-hidden />
 
       <div className="relative z-10 flex h-full flex-col">
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-[1.25rem] border border-white/70 bg-white/80 shadow-sm">
+        <div className={`flex items-start justify-between gap-4 ${isSubsidiary ? "mb-4" : "mb-5"}`}>
+          <div className={`relative flex items-center justify-center overflow-hidden border border-white/70 bg-white/80 shadow-sm ${isSubsidiary ? "h-13 w-13 rounded-2xl" : "h-16 w-16 rounded-[1.25rem]"}`}>
             {division.logoPath ? (
               <Image
                 src={division.logoPath}
                 alt={`${division.name} logo`}
                 fill
-                sizes="64px"
-                className="object-contain p-2.5"
+                sizes={isSubsidiary ? "52px" : "64px"}
+                className={isSubsidiary ? "object-contain p-2" : "object-contain p-2.5"}
               />
             ) : (
               <span className="text-xs font-bold tracking-[0.16em] text-teal-800">LEM</span>
@@ -271,6 +289,11 @@ function DivisionCard({ division, index }: { division: Division; index: number }
           </div>
 
           <div className="flex flex-col items-end gap-2">
+            {isSubsidiary ? (
+              <span className="rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-teal-700">
+                Subsidiary
+              </span>
+            ) : null}
             <span className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${accent.chip}`}>
               {division.eyebrow}
             </span>
@@ -280,24 +303,30 @@ function DivisionCard({ division, index }: { division: Division; index: number }
           </div>
         </div>
 
-        <h3 className="min-h-22 max-w-[14ch] text-3xl font-bold leading-tight text-stone-900">{division.name}</h3>
-        <p className="mt-3 min-h-18 text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">{division.promise}</p>
-        <p className="mt-5 min-h-28 text-base leading-relaxed text-stone-700">{division.description}</p>
+        <h3 className={`${isSubsidiary ? "max-w-[16ch] text-2xl leading-tight" : "min-h-22 max-w-[14ch] text-3xl leading-tight"} font-bold text-stone-900`}>
+          {division.name}
+        </h3>
+        <p className={`${isSubsidiary ? "mt-2 min-h-0 text-[11px] tracking-[0.16em]" : "mt-3 min-h-18 text-sm tracking-[0.18em]"} font-semibold uppercase text-stone-500`}>
+          {division.promise}
+        </p>
+        <p className={`${isSubsidiary ? "mt-4 min-h-0 text-sm leading-relaxed" : "mt-5 min-h-28 text-base leading-relaxed"} text-stone-700`}>
+          {division.description}
+        </p>
 
-        <div className="mt-auto pt-6">
+        <div className={`mt-auto ${isSubsidiary ? "pt-5" : "pt-6"}`}>
           <div className="h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${accent.edge}, transparent)` }} />
 
-          <div className="mt-6 flex min-h-7 items-center gap-3 text-xs uppercase tracking-[0.2em] text-stone-400">
+          <div className={`${isSubsidiary ? "mt-4" : "mt-6"} flex min-h-7 items-center gap-3 text-xs uppercase tracking-[0.2em] text-stone-400`}>
             <span className="signal-dot" />
-            <span>LEM network active</span>
+            <span>{isSubsidiary ? "LEM subsidiary" : "LEM network active"}</span>
           </div>
 
           {isLive ? (
-            <div className="mt-6 w-full">
+            <div className={`${isSubsidiary ? "mt-4" : "mt-6"} w-full`}>
               <MagneticLink href={division.href} label={division.cta} fullWidth />
             </div>
           ) : (
-            <span className="mt-6 inline-flex w-full items-center justify-center rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700 transition duration-300 group-hover:border-amber-400 group-hover:bg-amber-100">
+            <span className={`${isSubsidiary ? "mt-4" : "mt-6"} inline-flex w-full items-center justify-center rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700 transition duration-300 group-hover:border-amber-400 group-hover:bg-amber-100`}>
               {division.cta}
             </span>
           )}
@@ -307,7 +336,9 @@ function DivisionCard({ division, index }: { division: Division; index: number }
   );
 }
 
-export function HoldingExperience({ divisions, holdingLogoPath }: HoldingExperienceProps) {
+export function ProjectsExperience({ divisions, projectsLogoPath }: ProjectsExperienceProps) {
+  const [featuredDivision, ...subsidiaryDivisions] = divisions;
+
   return (
     <main className="relative isolate overflow-x-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -319,36 +350,86 @@ export function HoldingExperience({ divisions, holdingLogoPath }: HoldingExperie
       </div>
 
       <section className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <motion.section
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={staggerParent}
+          className="relative overflow-hidden rounded-[2.5rem] border border-white/60 bg-linear-to-br from-white via-teal-50/70 to-amber-50/60 px-6 py-12 shadow-[0_36px_100px_-60px_rgba(0,0,0,0.4)] backdrop-blur-sm sm:px-10 sm:py-16"
+        >
+          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+            <div className="absolute left-[-8%] top-8 h-36 w-36 rounded-full bg-teal-200/35 blur-3xl" />
+            <div className="absolute right-[-4%] top-12 h-40 w-40 rounded-full bg-amber-200/35 blur-3xl" />
+            <div className="absolute inset-x-[18%] bottom-0 h-24 rounded-full bg-white/55 blur-3xl" />
+          </div>
+
+          <div className="relative z-10 text-center">
+            <motion.h1 variants={revealUp} className="mx-auto max-w-5xl text-balance bg-linear-to-r from-teal-800 via-teal-500 to-amber-500 bg-clip-text text-5xl font-black leading-[0.92] text-transparent sm:text-6xl lg:text-7xl">
+              LEM Projects (Pty) Ltd.
+            </motion.h1>
+
+            <motion.div variants={revealUp} className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <IntroNavLink href="#subsidiaries" label="Explore LEM Projects" />
+              <IntroNavLink href="#contact" label="Contact Us / Inquire" />
+            </motion.div>
+          </div>
+        </motion.section>
+
         <section id="divisions" className="mt-2">
           <motion.div
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.25 }}
             variants={staggerParent}
-            className="rounded-[2.25rem] border border-white/60 bg-white/55 px-5 py-8 shadow-[0_30px_90px_-45px_rgba(0,0,0,0.4)] backdrop-blur-sm sm:px-8 sm:py-10"
+            className="mt-8 rounded-[2.25rem] border border-white/60 bg-white/55 px-5 py-8 shadow-[0_30px_90px_-45px_rgba(0,0,0,0.4)] backdrop-blur-sm sm:px-8 sm:py-10"
           >
             <motion.div variants={revealUp} className="text-center">
-              <p className="text-xs uppercase tracking-[0.22em] text-teal-700">Division access</p>
-              <h1 className="mt-4 text-4xl font-bold text-stone-900 sm:text-5xl">Three strong divisions. One clear system.</h1>
+              <p className="text-xs uppercase tracking-[0.22em] text-teal-700">Experience LEM Projects and its&apos; subsidiaries</p>
+              <h1 className="mt-4 text-4xl font-bold text-stone-900 sm:text-5xl">All solutions. One trusted name</h1>
               <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-stone-700">
-                LEM Holding is your gateway into the group. Choose the division you need and move directly into the right service line.
+                LEM Projects is your gateway to organisational success. Explore LEM Projects&apos; professional services and it&apos;s live subsidiaries.
               </p>
             </motion.div>
 
-            <motion.div variants={staggerParent} className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {divisions.map((division, index) => (
-                <DivisionCard key={division.name} division={division} index={index} />
-              ))}
-            </motion.div>
+            {featuredDivision ? (
+              <motion.div variants={staggerParent} className="mt-8 grid gap-6 xl:grid-cols-3 xl:items-stretch">
+                <div id="profile-portal" className="xl:col-span-1 scroll-mt-28">
+                  <DivisionCard division={featuredDivision} index={0} />
+                </div>
+
+                <div id="subsidiaries" className="xl:col-span-2 scroll-mt-28">
+                  <motion.div
+                    variants={revealUp}
+                    className="flex h-full min-h-full flex-col overflow-hidden rounded-4xl border border-white/70 bg-white/72 shadow-[0_24px_70px_-45px_rgba(0,0,0,0.35)] backdrop-blur-sm"
+                  >
+                    <div className="border-b border-teal-100 bg-linear-to-r from-teal-50 via-white to-teal-50 px-5 py-4">
+                      <div className="flex items-center justify-center gap-3 rounded-full border border-teal-200/80 bg-white/90 px-5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-800 shadow-[0_12px_30px_-22px_rgba(13,148,136,0.65)]">
+                        <span className="signal-dot" />
+                        <span>Subsidiaries</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-1 flex-col justify-end p-4 sm:p-5">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {subsidiaryDivisions.map((division, index) => (
+                          <DivisionCard key={division.name} division={division} index={index + 1} variant="subsidiary" />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            ) : null}
           </motion.div>
         </section>
 
         <motion.section
+          id="contact"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.28 }}
           variants={staggerParent}
-          className="final-frame mt-14 overflow-hidden rounded-[2.5rem] border border-white/60 px-6 py-10 text-white shadow-[0_40px_110px_-55px_rgba(0,0,0,0.8)] sm:px-10"
+          className="final-frame mt-14 overflow-hidden rounded-[2.5rem] border border-white/60 px-6 py-10 text-white shadow-[0_40px_110px_-55px_rgba(0,0,0,0.8)] scroll-mt-28 sm:px-10"
         >
           <div className="closing-aurora" aria-hidden />
           <div className="final-ghost-grid" aria-hidden>
@@ -360,10 +441,10 @@ export function HoldingExperience({ divisions, holdingLogoPath }: HoldingExperie
             <motion.div variants={revealUp} className="final-mark">
               <div className="text-xs uppercase tracking-[0.24em] text-teal-300">Contact us</div>
               <div className="final-mark-shell mt-5">
-                {holdingLogoPath ? (
-                  <Image src={holdingLogoPath} alt="LEM Holding logo" width={360} height={220} className="mx-auto h-auto w-full max-w-[16rem] object-contain" />
+                {projectsLogoPath ? (
+                  <Image src={projectsLogoPath} alt="LEM Projects logo" width={360} height={220} className="mx-auto h-auto w-full max-w-[16rem] object-contain" />
                 ) : (
-                  <div className="holding-logo-fallback">LEM Holding</div>
+                  <div className="projects-logo-fallback">LEM Projects</div>
                 )}
               </div>
               <div className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-teal-200">
@@ -373,7 +454,7 @@ export function HoldingExperience({ divisions, holdingLogoPath }: HoldingExperie
 
             <div>
               <motion.h2 variants={revealUp} className="relative z-10 max-w-4xl text-4xl font-bold leading-tight sm:text-5xl">
-                From strategy to supply, from planning to living - LEM Holding is your trusted partner in progress.
+                From strategy to supply, from planning to living, LEM Projects is your trusted partner in progress.
               </motion.h2>
               <motion.p variants={revealUp} className="relative z-10 mt-6 max-w-3xl text-lg leading-relaxed text-stone-200">
                 One group built to support business performance, daily operations, and reliable living with one clear standard of service.

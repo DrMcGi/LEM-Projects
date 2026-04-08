@@ -1,6 +1,6 @@
 # Command Center Reference
 
-This file preserves the exact Command Center implementation that was removed from the live LEM Holding landing page.
+This file preserves the exact Command Center implementation that was removed from the live LEM Projects landing page.
 
 Use this as a copy/paste reference for later reuse or study.
 
@@ -35,7 +35,7 @@ function CommandCenter({ divisions }: { divisions: Division[] }) {
         <p className="text-xs uppercase tracking-[0.24em] text-teal-300">Command center</p>
         <h2 className="mt-4 text-4xl font-bold leading-tight text-white sm:text-5xl">One hub. Three working lines.</h2>
         <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-stone-300">
-          LEM Holding connects planning, living, and supply in one operating system. Hover each node and the system opens up.
+          LEM Projects connects planning, living, and supply in one operating system. Hover each node and the system opens up.
         </p>
       </motion.div>
 
@@ -43,7 +43,7 @@ function CommandCenter({ divisions }: { divisions: Division[] }) {
         <motion.div variants={revealUp} className="command-shell">
           <div className="command-hub">
             <div className="text-xs uppercase tracking-[0.28em] text-teal-200">Core</div>
-            <div className="mt-3 text-3xl font-bold text-white">LEM Holding</div>
+            <div className="mt-3 text-3xl font-bold text-white">LEM Projects</div>
             <div className="mt-3 text-sm leading-relaxed text-stone-300">Powering Solutions. Enabling Possibilities.</div>
             <div className="command-pulse command-pulse-a" aria-hidden />
             <div className="command-pulse command-pulse-b" aria-hidden />

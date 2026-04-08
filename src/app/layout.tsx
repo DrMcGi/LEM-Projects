@@ -3,18 +3,18 @@ import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lem-holding.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lem-projects.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "LEM Holding | Projects, Accommodation, and Supply Solutions",
-    template: "%s | LEM Holding",
+    default: "LEM Projects | Strategic Projects, Accommodation, and Supply Solutions",
+    template: "%s | LEM Projects",
   },
   description:
-    "LEM Holding brings together LEM Projects, LEM Accommodation, and LEM Supply Enterprise to support strategic execution, reliable accommodation, and everyday operational supply.",
+    "LEM Projects brings together strategic projects, reliable accommodation, and supply enterprise support for a stronger, more connected operating group.",
   keywords: [
-    "LEM Holding",
+    "LEM Projects",
     "business solutions Limpopo",
     "strategic projects",
     "accommodation Polokwane",
@@ -26,28 +26,28 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "LEM Holding | Projects, Accommodation, and Supply Solutions",
+    title: "LEM Projects | Strategic Projects, Accommodation, and Supply Solutions",
     description:
       "Explore the LEM group portfolio across strategic projects, reliable accommodation, and operational supply support.",
     url: siteUrl,
-    siteName: "LEM Holding",
+    siteName: "LEM Projects",
     locale: "en_ZA",
     type: "website",
     images: [
       {
-        url: "/logos/LEM-Holding_Logo.png",
+        url: "/logos/LEM-Projects_Logo.png",
         width: 1200,
         height: 630,
-        alt: "LEM Holding logo",
+        alt: "LEM Projects logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "LEM Holding | Projects, Accommodation, and Supply Solutions",
+    title: "LEM Projects | Strategic Projects, Accommodation, and Supply Solutions",
     description:
       "A unified LEM group presence across strategic projects, accommodation, and supply support.",
-    images: ["/logos/LEM-Holding_Logo.png"],
+    images: ["/logos/LEM-Projects_Logo.png"],
   },
   robots: {
     index: true,

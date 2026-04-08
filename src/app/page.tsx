@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { HoldingExperience } from "@/components/holding-experience";
+import { ProjectsExperience } from "@/components/projects-experience";
 
 type DivisionAccent = "teal" | "amber" | "stone";
 
@@ -18,12 +18,12 @@ type DivisionSeed = {
 
 const divisions: DivisionSeed[] = [
   {
-    name: "LEM Projects",
+    name: "LEM Projects Profile Portal",
     status: "Live",
     description:
       "Critical operational and strategic project solutions that help businesses move faster and smarter.",
     href: "https://lem-projects.vercel.app",
-    cta: "Visit LEM Projects",
+    cta: "Visit LEM Projects Profile Portal",
     logoFile: "LEM-Projects_Logo.png",
     eyebrow: "Strategic Execution",
     accent: "amber",
@@ -65,9 +65,9 @@ const divisionsWithAssets = divisions.map((division) => {
   };
 });
 
-const holdingLogoDiskPath = path.join(process.cwd(), "public", "logos", "LEM-Holding_Logo.png");
-const holdingLogoPath = fs.existsSync(holdingLogoDiskPath) ? "/logos/LEM-Holding_Logo.png" : null;
+const projectsLogoDiskPath = path.join(process.cwd(), "public", "logos", "LEM-Projects_Logo.png");
+const projectsLogoPath = fs.existsSync(projectsLogoDiskPath) ? "/logos/LEM-Projects_Logo.png" : null;
 
 export default function Home() {
-  return <HoldingExperience divisions={divisionsWithAssets} holdingLogoPath={holdingLogoPath} />;
+  return <ProjectsExperience divisions={divisionsWithAssets} projectsLogoPath={projectsLogoPath} />;
 }
