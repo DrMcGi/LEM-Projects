@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
@@ -62,7 +63,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <div className="flex min-h-full flex-col">
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
+          </div>
+        </SmoothScroll>
       </body>
     </html>
   );
