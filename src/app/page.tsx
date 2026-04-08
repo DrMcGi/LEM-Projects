@@ -22,7 +22,7 @@ const divisions: DivisionSeed[] = [
     status: "Live",
     description:
       "Critical operational and strategic project solutions that help businesses move faster and smarter.",
-    href: "https://lem-projects.vercel.app",
+    href: "https://lem-projects-profile-portal.vercel.app",
     cta: "Visit LEM Projects Profile Portal",
     logoFile: "LEM-Projects_Logo.png",
     eyebrow: "Strategic Execution",
