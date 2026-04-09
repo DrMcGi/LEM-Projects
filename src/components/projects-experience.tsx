@@ -266,7 +266,7 @@ function DivisionCard({ division, index, variant = "featured" }: { division: Div
       whileHover={prefersReducedMotion ? undefined : { y: isSubsidiary ? -8 : -12, scale: isSubsidiary ? 1.012 : 1.018 }}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetRotation}
-      className={`division-card group relative overflow-hidden border border-white/60 bg-white/85 backdrop-blur-sm ${accent.ring} ${isSubsidiary ? "rounded-4xl p-4 sm:p-5" : "rounded-4xl p-6"}`}
+      className={`division-card group relative h-full overflow-hidden border border-white/60 bg-white/85 backdrop-blur-sm ${accent.ring} ${isSubsidiary ? "rounded-4xl p-4 sm:p-5" : "rounded-4xl p-6"}`}
     >
       <div className={`pointer-events-none absolute inset-0 bg-linear-to-br ${accent.glow} opacity-70`} />
       <div className={`pointer-events-none top-0 rounded-b-full bg-white/35 blur-2xl ${isSubsidiary ? "absolute inset-x-5 h-18" : "absolute inset-x-8 h-24"}`} />
@@ -363,15 +363,32 @@ export function ProjectsExperience({ divisions, projectsLogoPath }: ProjectsExpe
             <div className="absolute inset-x-[18%] bottom-0 h-24 rounded-full bg-white/55 blur-3xl" />
           </div>
 
-          <div className="relative z-10 text-center">
-            <motion.h1 variants={revealUp} className="mx-auto max-w-5xl text-balance bg-linear-to-r from-teal-800 via-teal-500 to-amber-500 bg-clip-text text-5xl font-black leading-[0.92] text-transparent sm:text-6xl lg:text-7xl">
-              LEM Projects (Pty) Ltd.
-            </motion.h1>
+          <div className="relative z-10 mx-auto grid max-w-6xl gap-8 text-center lg:grid-cols-[minmax(220px,260px)_1fr] lg:items-center lg:gap-10 lg:text-left">
+            {projectsLogoPath ? (
+              <motion.div variants={revealUp} className="mx-auto w-full max-w-40 sm:max-w-48 lg:max-w-none">
+                <div className="relative aspect-square w-full overflow-hidden rounded-4xl border border-white/70 bg-white/80 p-4 shadow-[0_28px_70px_-42px_rgba(0,0,0,0.45)] sm:p-5 lg:h-full lg:p-6">
+                  <Image
+                    src={projectsLogoPath}
+                    alt="LEM Projects logo"
+                    fill
+                    sizes="(min-width: 1024px) 260px, (min-width: 640px) 192px, 160px"
+                    className="object-contain p-2 sm:p-3"
+                    priority
+                  />
+                </div>
+              </motion.div>
+            ) : null}
 
-            <motion.div variants={revealUp} className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <IntroNavLink href="#subsidiaries" label="Explore LEM Projects" />
-              <IntroNavLink href="#contact" label="Contact Us / Inquire" />
-            </motion.div>
+            <div className="flex flex-col items-center lg:items-start">
+              <motion.h1 variants={revealUp} className="max-w-5xl text-balance bg-linear-to-r from-teal-800 via-teal-500 to-amber-500 bg-clip-text text-5xl font-black leading-[0.92] text-transparent sm:text-6xl lg:text-7xl">
+                LEM Projects (Pty) Ltd.
+              </motion.h1>
+
+              <motion.div variants={revealUp} className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                <IntroNavLink href="#subsidiaries" label="Explore LEM Projects" />
+                <IntroNavLink href="#contact" label="Contact Us / Inquire" />
+              </motion.div>
+            </div>
           </div>
         </motion.section>
 
@@ -393,30 +410,42 @@ export function ProjectsExperience({ divisions, projectsLogoPath }: ProjectsExpe
 
             {featuredDivision ? (
               <motion.div variants={staggerParent} className="mt-8 grid gap-6 xl:grid-cols-3 xl:items-stretch">
-                <div id="profile-portal" className="xl:col-span-1 scroll-mt-28">
+                <div id="profile-portal" className="scroll-mt-28 xl:col-span-1 xl:h-full">
                   <DivisionCard division={featuredDivision} index={0} />
                 </div>
 
                 <div id="subsidiaries" className="xl:col-span-2 scroll-mt-28">
-                  <motion.div
-                    variants={revealUp}
-                    className="flex h-full min-h-full flex-col overflow-hidden rounded-4xl border border-white/70 bg-white/72 shadow-[0_24px_70px_-45px_rgba(0,0,0,0.35)] backdrop-blur-sm"
-                  >
-                    <div className="border-b border-teal-100 bg-linear-to-r from-teal-50 via-white to-teal-50 px-5 py-4">
-                      <div className="flex items-center justify-center gap-3 rounded-full border border-teal-200/80 bg-white/90 px-5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-800 shadow-[0_12px_30px_-22px_rgba(13,148,136,0.65)]">
-                        <span className="signal-dot" />
-                        <span>Subsidiaries</span>
-                      </div>
-                    </div>
+                  <div className="flex h-full flex-col gap-4">
+                    <motion.div
+                      variants={revealUp}
+                      className="rounded-4xl border border-white/70 bg-linear-to-br from-white/88 via-teal-50/78 to-amber-50/70 px-5 py-5 shadow-[0_24px_70px_-45px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:px-6"
+                    >
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-700">Group statement</div>
+                      <p className="mt-3 text-sm leading-7 text-stone-700 sm:text-[15px]">
+                        LEM Projects is a dynamic professional services company with business strategy that continuously expands its potential through diverse business ventures. Its subsidiaries, LEM Accommodation and LEM Supply Enterprise, operate under this vision to deliver specialized services that collectively position LEM Projects as a unified, forward-thinking company.
+                      </p>
+                    </motion.div>
 
-                    <div className="flex flex-1 flex-col justify-end p-4 sm:p-5">
-                      <div className="grid gap-4 md:grid-cols-2">
-                        {subsidiaryDivisions.map((division, index) => (
-                          <DivisionCard key={division.name} division={division} index={index + 1} variant="subsidiary" />
-                        ))}
+                    <motion.div
+                      variants={revealUp}
+                      className="flex flex-col overflow-hidden rounded-4xl border border-white/70 bg-white/72 shadow-[0_24px_70px_-45px_rgba(0,0,0,0.35)] backdrop-blur-sm"
+                    >
+                      <div className="border-b border-teal-100 bg-linear-to-r from-teal-50 via-white to-teal-50 px-4 py-3 sm:px-5">
+                        <div className="mx-auto flex max-w-xl items-center justify-center gap-3 rounded-full border border-teal-200/80 bg-white/90 px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-800 shadow-[0_12px_30px_-22px_rgba(13,148,136,0.65)]">
+                          <span className="signal-dot" />
+                          <span>Subsidiaries</span>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
+
+                      <div className="p-3 sm:p-4">
+                        <div className="grid gap-3 md:grid-cols-2">
+                          {subsidiaryDivisions.map((division, index) => (
+                            <DivisionCard key={division.name} division={division} index={index + 1} variant="subsidiary" />
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
                 </div>
               </motion.div>
             ) : null}
