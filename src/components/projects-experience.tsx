@@ -386,7 +386,7 @@ export function ProjectsExperience({ divisions, projectsLogoPath }: ProjectsExpe
 
               <motion.div variants={revealUp} className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                 <IntroNavLink href="#subsidiaries" label="Explore LEM Projects" />
-                <IntroNavLink href="#contact" label="Contact Us / Inquire" />
+                <IntroNavLink href="#contact" label="Contact Us / Enquire" />
               </motion.div>
             </div>
           </div>
