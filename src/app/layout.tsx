@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lem-projects.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.lemprojects.co.za";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
